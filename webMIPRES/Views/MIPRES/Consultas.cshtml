@@ -1,0 +1,134 @@
+﻿
+@{
+    ViewBag.Title = "Consultas";
+}
+
+<h2>Consultas Prescripciones</h2>
+@using (Html.BeginForm("Consultas", "MIPRESController", FormMethod.Post))
+{
+    <fieldset>
+        <div class="row">
+            <div class="field col-md-2">
+                @Html.Label("Fecha:")
+                @Html.TextBox("FechaIni", "", new { @class = "form-control input-sm datepicker ", @readonly = "readonly" })
+
+            </div>
+
+            <div class="form-actions ">
+                <button type="button" id="btnBuscar" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-search"></span> Buscar
+                </button>
+                &nbsp;
+                <a href="@Url.Action("LogOut", "Consultas")" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-off"></span> Salir
+                </a>
+                @*@Html.ActionLink("SALIR", "LogOut", "")*@
+            </div>
+        </div>
+        <br />
+
+        @* Datatable de Pacientes por Pabellon *@
+        <div class="panel panel-primary col-lg-12" style="height:300px;" id="dtPrescripcion">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i>
+                Prescripciones Activas
+            </div>
+            @* Tabla de datagrid*@
+            <div id="gvPrescripciones">
+
+            </div>
+            <!-- Image loader -->
+            <div id="loader" style="display: none;" class="text-center">
+                <img src="~/Content/images/Spinner-1s-200px.gif" border="0">
+            </div>
+        </div>
+
+        <div class="panel panel-primary col-lg-6 resizable" style="height:372px;" id="dtPrescripcion">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i>
+                Medicamentos
+            </div>
+            @* Tabla de datagrid*@
+            <div id="gvMedicamento">
+
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="modMedicamentos" aria-labelledby="modMedicamentos" aria-hidden="true" style="overflow-y: auto;">
+            @*<div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="margin:auto">*@
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnCloseMD">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4>Datos Casos Pacientes</h4>
+            </div>
+
+            <div class="modal-body" style="margin-left: 50px; border-right-width: 50px; background: white; margin-right:50px;">
+                @*este es el contenido*@
+
+                @*@{Html.RenderAction("Medicamentos", "Consulta");}*@
+
+            </div>
+
+            <div class="modal-footer" style="margin-left: 50px; border-right-width: 50px; background: white; margin-right: 50px;">
+                <button class="btn btn-success btn-sm" data-dismiss="modal" id="btnEnviar">Registrar</button>
+                <button class="btn btn-warning btn-sm" data-dismiss="modal" id="btnClosePC">Cancelar</button>
+            </div>
+        </div>
+
+    </fieldset>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link href="~/Extras/DataTable/select.dataTables.min.css" rel="stylesheet" />
+
+    @section Scripts {
+        <script src="~/Extras/DataTable/jquery.dataTables.min.js"></script>
+        <script src="~/Extras/DataTable/dataTables.select.min.js"></script>
+        <script src="~/Extras/DataTable/Css/dataTables.responsive.min.js"></script>
+        <link href="~/Extras/DataTable/Css/responsive.bootstrap.css" rel="stylesheet" />
+
+        <link href="~/Scripts/datepicker/css/datepicker3.css" rel="stylesheet" />
+        <script src="~/Scripts/datepicker/js/bootstrap-datepicker.js"></script>
+
+        <script src="~/Scripts/JsMipres/JsMipres.js"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#FechaIni").datepicker({
+                    format: 'yyyy-mm-dd',
+                    //dateFormat: "dd/mm/yy",
+                    showOn: 'button',
+                    buttonImageOnly: true,
+                    buttonImage: '/Extras/calendar.png'
+                });
+            });
+        </script>
+
+        <style>
+            #dtPrescripcion {
+                overflow: scroll;
+            }
+        </style>
+    }
+
+    <div id="dvOcultos" style="display:none">
+
+        @Html.Hidden("hfNit")
+        @Html.Hidden("hfToken")
+        @Html.Hidden("hfEmpresa")
+        @Html.Hidden("hfNoCuenta")
+        @Html.Hidden("hfNoHistoria")
+        @Html.Hidden("hfNoIdentificacion")
+        @Html.Hidden("hfUrlPrescripcion")
+        @Html.Hidden("hfUrlEntregaAmbito")
+        @Html.Hidden("hfUrlReporteEntrega")
+        @Html.Hidden("hfUrlValidaToken")
+        @Html.Hidden("hfUrlFacturacion")
+
+
+
+
+    </div>
+}

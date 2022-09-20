@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "ViewPDF";
+}
+
+<h2>Instructivo PDF Gestion MIPRES</h2>
+@using (Html.BeginForm("ViewPDF", "MIPRES", FormMethod.Post))
+{
+    <div class="panel panel-primary col-lg-12">
+        <br>
+
+        <div class="form-actions ">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Ver Instructivo" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("MIPRES", "ViewPDF")'" />
+                &nbsp;
+                @Html.ActionLink("SALIR", "Index", "Home")
+            </div>
+
+        </div>
+
+        <br />
+
+    </div>
+
+    @section Scripts {
+
+        <script src="~/Scripts/EventoAdversoJS/JSConsultaAdv.js"></script>
+
+        <script type="text/javascript">
+        @ViewBag.scripCall
+        function AbrePdf() {
+            var urlFile = "http://" + window.location.host +"/Documentos/";
+            var idDoc = $("#cplContenido_txtIdDoc").val();
+            var Numero = $("#cplContenido_txtFactura").val();
+            var FilePDF = urlFile + 'GestionMipres.pdf';
+            hidden = open(FilePDF, 'NewWindow', 'top=0,left=0,width=800,height=600,status=no,resizable=no,scrollbars=yes');
+        }
+        </script>
+
+    }
+
+}
+
+

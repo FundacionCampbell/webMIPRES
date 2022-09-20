@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "Reportes de Entregas Por Fechas";
+}
+
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("GetReportesFechas", "MIPRESController", FormMethod.Post))
+{
+    <fieldset>
+        <div class="row">
+            <div class="field col-md-2">
+                @Html.Label("Fecha:")
+                @Html.TextBox("FechaIni", "", new { @class = "form-control input-sm datepicker ", @readonly = "readonly" })
+
+            </div>
+
+            <div class="form-actions ">
+                <button type="button" id="btnBuscarRF" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-search"></span> Buscar
+                </button>
+                &nbsp;
+                <a href="@Url.Action("LogOut", "Home")" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-off"></span> Salir
+                </a>
+                @*@Html.ActionLink("SALIR", "LogOut", "")*@
+            </div>
+        </div>
+        <br />
+
+        @* Datatable prescripciones *@
+        <div class="panel panel-primary col-lg-12" style="height:472px;" id="dtPrescripcion">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i>
+                Reportes Por Fecha
+            </div>
+            @* Tabla de datagrid*@
+            <div id="gvPrescripciones">
+
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-clock-o"></i> Espere por favor</h4>
+                    </div>
+                    <div class="modal-body center-block">
+                        <p>Procesando...</p>
+                        <div class="progress">
+                            <div class="progress-bar bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+    </fieldset>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link href="~/Extras/DataTable/select.dataTables.min.css" rel="stylesheet" />
+
+    @section Scripts {
+        <script src="~/Extras/DataTable/jquery.dataTables.min.js"></script>
+        <script src="~/Extras/DataTable/dataTables.select.min.js"></script>
+        <script src="~/Extras/DataTable/Css/dataTables.responsive.min.js"></script>
+        <link href="~/Extras/DataTable/Css/responsive.bootstrap.css" rel="stylesheet" />
+
+        <link href="~/Scripts/datepicker/css/datepicker3.css" rel="stylesheet" />
+        <script src="~/Scripts/datepicker/js/bootstrap-datepicker.js"></script>
+
+        <script src="~/Extras/Utilidades.js"></script>
+        <script src="~/Extras/Validaciones.js"></script>
+        <script src="~/Scripts/JsMipres/JsMipres.js"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#FechaIni").datepicker({
+                    format: 'yyyy-mm-dd',
+                    //dateFormat: "dd/mm/yy",
+                    showOn: 'button',
+                    buttonImageOnly: true,
+                    buttonImage: '/Extras/calendar.png'
+                });
+            });
+        </script>
+
+        <style>
+            #dtPrescripcion {
+                overflow: scroll;
+            }
+        </style>
+    }
+
+    <div id="dvOcultos" style="display:none">
+
+        @Html.Hidden("hfNit")
+        @Html.Hidden("hfToken")
+        @Html.Hidden("hfTokenProveedor")
+        @Html.Hidden("hfEmpresa")
+        @Html.Hidden("hfNoCuenta")
+        @Html.Hidden("hfNoHistoria")
+        @Html.Hidden("hfNoIdentificacion")
+        @Html.Hidden("hfTipoIdentificacion")
+        @Html.Hidden("hfNoPrescripcion")
+        @Html.Hidden("hfUrlPrescripciones")
+        @Html.Hidden("hfUrlEntregaAmbito")
+        @Html.Hidden("hfUrlReporteEntrega")
+        @Html.Hidden("hfUrlValidaToken")
+        @Html.Hidden("hfUrlUnaPrescripcion")
+        @Html.Hidden("hfUrlFacturacion")
+        @Html.Hidden("hfPaciente")
+        @Html.Hidden("hfTokenGenerado")
+        @Html.Hidden("hfNoID")
+        @Html.Hidden("hfIDEntrega")
+        @Html.Hidden("hfVlrEntrega")
+        @Html.Hidden("hfNoIDReporte")
+        @Html.Hidden("hfIDReporteEntrega")
+        @Html.Hidden("hfValorEntrega")
+        @Html.Hidden("hfUrlEntregasFechas")
+        @Html.Hidden("hfUrlReportesFechas")
+        @Html.Hidden("hfUrlEntregaPrescripcion")
+        @Html.Hidden("hfUrlReportePrescripcion")
+        @Html.Hidden("hfUrlAnularNoEntrega")
+        @Html.Hidden("hfUrlAnularReporteEntrega")
+        @Html.Hidden("hfProceso")
+
+    </div>
+
+}
+

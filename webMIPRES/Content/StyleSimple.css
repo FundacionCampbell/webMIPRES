@@ -1,0 +1,39 @@
+﻿/* CSS Menu Simple*/
+* {
+    -webkit-transition-property: all;
+    -webkit-transition-duration: .2s;
+    -moz-transition-timing-function: cubic-bezier(100,50,21,6);
+    -moz-transition-property: all;
+    -moz-transition-timing-function: cubic-bezier(100,50,21,6);
+}
+
+/*body{
+    background: #FFFFFF;
+    padding: 10px;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+}*/
+
+h2{
+    color: RGB(0, 153, 0);
+    font-weight: 100;
+    font-family: Impact;
+}
+
+.btn_mnu {
+    color: #FFFFFF;
+    background: RGB(51, 153, 51);
+    padding: 10px 20px;
+    font-size: 12px;
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.btn_mnu:hover {
+        border: none;
+        background: rgba(0, 0, 0, 0.4);
+        background: #7CFC00;
+        padding: 20px 20px;
+        color: #1b1b1b;
+}

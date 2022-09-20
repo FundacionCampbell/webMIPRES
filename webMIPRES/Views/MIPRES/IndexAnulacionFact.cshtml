@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Anulacion Facturacion";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+    if (ViewBag.Role = "P")
+    {
+        <script type="text/javascript">
+            alert("Rol de usuario no tiene permiso para esta opcion...");
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
+    }
+}
+
+<h2>@ViewBag.Title</h2>

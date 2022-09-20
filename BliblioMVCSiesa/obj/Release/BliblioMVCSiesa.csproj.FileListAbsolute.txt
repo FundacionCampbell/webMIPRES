@@ -1,0 +1,6 @@
+D:\Fuentes\EventosAdversos\BliblioMVCSiesa\obj\Release\BliblioMVCSiesa.csprojAssemblyReference.cache
+D:\Fuentes\EventosAdversos\BliblioMVCSiesa\obj\Release\BliblioMVCSiesa.csproj.CoreCompileInputs.cache
+D:\Fuentes\RondaMedica\BliblioMVCSiesa\obj\Release\BliblioMVCSiesa.csprojAssemblyReference.cache
+D:\Fuentes\RondaMedica\BliblioMVCSiesa\obj\Release\BliblioMVCSiesa.csproj.CoreCompileInputs.cache
+D:\Fuentes\RondaHospitalaria\BliblioMVCSiesa\obj\Release\BliblioMVCSiesa.csprojAssemblyReference.cache
+D:\Fuentes\RondaHospitalaria\BliblioMVCSiesa\obj\Release\BliblioMVCSiesa.csproj.CoreCompileInputs.cache

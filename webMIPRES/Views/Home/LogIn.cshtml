@@ -1,0 +1,167 @@
+﻿@model webMIPRES.Models.UsuariosModel
+
+@{
+    ViewBag.Title = "LogIn";
+}
+
+
+<link href="~/Extras/Login/css/style.css" rel="stylesheet" />
+
+
+@using (Html.BeginForm("Authorise", "Home", FormMethod.Post))
+{
+    <!--header-->
+    <div class="agileheader">
+        <h1>Grupo CAMPBELL</h1>
+    </div>
+    <!--//header-->
+
+    <!--main-->
+    <div class="main-w3l">
+        <div class="w3layouts-main">
+            <h2>ACCESO USUARIOS</h2>
+
+            <input value="Usuario" id="usuario" name="Usuario" type="text" required="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Usuario';}" />
+            <input value="PASSWORD" id="PassWordUsu" name="PassWordUsu" type="password" required="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'password';}" />
+            @*<span class="label label-default">Empresa:</span>*@
+            <select name="ddlEmpresa" id="ddlEmpresa">
+                <option value="0">Seleccione Empresa...</option>
+            </select>
+
+            @*@Html.DropDownList("Empresalist", null, "-- Seleccion Empresa --", new { @id = "ddlEmpresa" })*@
+
+            <span><input type="checkbox" />Remember Me</span>
+            <h6><a href="#">Olvido su Password?</a></h6>
+            <div class="clear"></div>
+
+            <div class="form-actions ">
+                <input type="submit" value="login" name="login">
+                @*<input type="button" value="login" name="login" id="login" />*@
+                <p><a>@ViewBag.MessageError</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="dvOcultos" style="display:none">
+        @Html.Hidden("hfEmpresa")
+        @Html.Hidden("hfIpConexion", (object)ViewBag.ipConn)
+        @Html.Hidden("hfPuerto", (object)ViewBag.ipport)
+        @Html.Hidden("hfBaseDB", (object)ViewBag.ipBd)
+        @Html.Hidden("hfNombreEmpresa")
+        @Html.Hidden("hfRoles")
+        @Html.Hidden("hfCodigoEmp")
+
+    </div>
+
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            load_Empresas();
+
+            $("#ddlEmpresa").change(function () {
+                var selectedText = $(this).find("option:selected").text();
+                var selectedValue = $(this).val();
+                $("#hfCodigoEmp").val(selectedValue);
+                $("#hfNombreEmpresa").val(selectedText);
+                
+                //GetEmpresaActiva(selectedValue);
+
+                //alert('Empresa:' + $("#hfEmpresa").val());
+            });
+
+        })
+
+        function BoxLogin() {
+            $("#login-div").dialog({
+                autoOpen: true,
+                resizable: false,
+                height: "auto",
+                width: 630,
+                modal: true,
+                show: {
+                    effect: "blind",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "blind",
+                    duration: 1000
+                }
+            });
+        }
+
+        function load_Empresas()
+        {
+            var UriRuta = "Get_EmpresasWeb"; //'@Url.Action("controller","action")'
+
+            $.ajax({
+                type: "POST", //GET
+                url: UriRuta,
+                content: "application/json; charset=utf-8",
+                dataType: "json",
+                // De la siguiente manera indicamos que del div tome los input.
+                data: {},
+                success: function (data) {
+
+                    var msg = data.d;
+                    console.log(data);
+
+                    if (msg !== "") {
+                        //alert('Llegue al lovMed');
+                        var res = JSON.parse(data);
+                        $.each(res, function (i, lstEmpresa) {
+                            $("#ddlEmpresa").append('<option value="' + lstEmpresa["Empresa"] + '">' + lstEmpresa["NombreEmpresa"] + '</option>');
+                            //$("#lstMedicos").append('<option value="' + medical.Value + '">' + medical.Text + '</option>');
+                        });
+                    }
+                    else {
+                        alert("Datos en Blanco");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("ERROR: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+                }
+            });
+        }
+
+        function GetEmpresaActiva(CodEmpresa)
+        {
+            var parametros = { "CodEmpresa": CodEmpresa }
+            $.ajax({
+                url: "Get_UnaEmpresasWeb",
+                type: "POST",
+                data: JSON.stringify(parametros),
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function (data) {
+
+                    var msg = data.d;
+                    console.log(data);
+
+                    if (msg !== "")
+                    {
+                            var res = JSON.parse(data);
+                            $.each(res, function (i, item) {
+                                var ipconexion = item["Servidor"];
+                                var dbBase = item["BaseDatos"];
+                                var ipPuerto = item["Puerto"];
+                                $("#hfIpConexion").val(ipconexion);
+                                $("#hfBaseDB").val(dbBase);
+                                $("#hfPuerto").val(ipPuerto);
+                            });
+                     }
+                     else {
+                            alert('Error Empresa');
+                     }
+                        //$('#submit').val('Save');
+                    },
+                    error: function (jqXHR, status, error) {
+                        alert("ERROR: " + status + " " + error + " " + jqXHR.status + " " + jqXHR.statusText)
+                    }
+                });
+        }
+
+    </script>
+}

@@ -1,0 +1,209 @@
+﻿
+@{
+    ViewBag.Title = "InformeMIPRES";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Home/LogIn");
+    }
+
+}
+
+<h2>InformeM MIPRES</h2>
+@using (Html.BeginForm())
+{
+    <div class="panel-body">
+        <fieldset>
+            <legend>Parametros del Reporte</legend>
+            <div class="row">
+                <div class="field col-md-2">
+                    @Html.Label("Fecha Inicial:")
+                    @Html.TextBox("FechaIni", "", new { @class = "form-control input-sm datepicker ", @readonly = "readonly" })
+
+                </div>
+                <div class="field col-md-2">
+                    @Html.Label("Fecha Final:")
+                    @Html.TextBox("FechaFin", "", new { @class = "form-control input-sm datepicker ", @readonly = "readonly" })
+                </div>
+            </div>
+            <br />
+            <div class="form-actions ">
+                <button type="button" id="btnBuscarInf" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-search"></span> Buscar
+                </button>
+                &nbsp;
+                <a href="@Url.Action("LogOut", "Home")" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-off"></span> Salir
+                </a>
+                @*@Html.ActionLink("SALIR", "LogOut", "")*@
+            </div>
+        </fieldset>
+    </div>
+
+    // Datatable de Lista de Eventos Adversos
+    <div id="gvPrescripcion">
+
+    </div>
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link href="~/Extras/DataTable/select.dataTables.min.css" rel="stylesheet" />
+
+    @section Scripts {
+
+        <script src="~/Extras/DataTable/jquery.dataTables.min.js"></script>
+        <script src="~/Extras/DataTable/dataTables.select.min.js"></script>
+
+        <link href="~/Extras/DataTable/buttons.bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Extras/DataTable/buttons.dataTables.css" rel="stylesheet" />
+        <script src="~/Extras/DataTable/dataTables.buttons.min.js"></script>
+        <script src="~/Extras/DataTable/jszip.min.js"></script>
+        <script src="~/Extras/DataTable/pdfmake.min.js"></script>
+        <script src="~/Extras/DataTable/buttons.html5.min.js"></script>
+        <script src="~/Extras/DataTable/buttons.print.min.js"></script>
+        <script src="~/Extras/DataTable/buttons.flash.min.js"></script>
+
+        <link href="~/Scripts/datepicker/css/datepicker3.css" rel="stylesheet" />
+        <script src="~/Scripts/datepicker/js/bootstrap-datepicker.js"></script>
+
+        <script src="~/Extras/Validaciones.js" type="text/javascript"></script>
+        <script src="~/Extras/Utilidades.js" type="text/javascript"></script>
+
+        <script src="~/Scripts/JsMipres/JsMipres.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+            })
+
+            $(function () {
+                $("#FechaIni").datepicker({
+                    format: 'dd/mm/yyyy',
+                    //dateFormat: "dd/mm/yy",
+                    showOn: 'button',
+                    buttonImageOnly: true,
+                    buttonImage: '/Extras/calendar.png'
+                });
+            });
+
+            $(function () {
+                $("#FechaFin").datepicker({
+                    format: 'dd/mm/yyyy',
+                    //dateFormat: "dd/mm/yy",
+                    showOn: 'button',
+                    buttonImageOnly: true,
+                    buttonImage: '/Extras/calendar.png'
+                });
+            });
+        </script>
+
+        <style>
+            :after, :before {
+                box-sizing: border-box;
+            }
+
+            a {
+                color: #337ab7;
+                text-decoration: none;
+            }
+
+            i {
+                margin-bottom: 4px;
+            }
+
+            .btn {
+                display: inline-block;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 1.42857143;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                cursor: pointer;
+                user-select: none;
+                background-image: none;
+                border: 1px solid transparent;
+                border-radius: 4px;
+            }
+
+            .btn-app {
+                color: white;
+                box-shadow: none;
+                border-radius: 3px;
+                position: relative;
+                padding: 10px 15px;
+                margin: 0;
+                min-width: 60px;
+                max-width: 80px;
+                text-align: center;
+                border: 1px solid #ddd;
+                background-color: #f4f4f4;
+                font-size: 12px;
+                transition: all .2s;
+                background-color: steelblue !important;
+            }
+
+                .btn-app > .fa, .btn-app > .glyphicon, .btn-app > .ion {
+                    font-size: 30px;
+                    display: block;
+                }
+
+                .btn-app:hover {
+                    border-color: #aaa;
+                    transform: scale(1.1);
+                }
+
+            .pdf {
+                background-color: #dc2f2f !important;
+            }
+
+            .excel {
+                background-color: #3ca23c !important;
+            }
+
+            .csv {
+                background-color: #e86c3a !important;
+            }
+
+            .imprimir {
+                background-color: #8766b1 !important;
+            }
+
+            .selectTable {
+                height: 40px;
+                float: right;
+            }
+
+            div.dataTables_wrapper div.dataTables_filter {
+                text-align: left;
+                margin-top: 15px;
+            }
+
+            .btn-secondary {
+                color: #fff;
+                background-color: #4682b4;
+                border-color: #4682b4;
+            }
+
+                .btn-secondary:hover {
+                    color: #fff;
+                    background-color: #315f86;
+                    border-color: #545b62;
+                }
+
+            .titulo-tabla {
+                color: #606263;
+                text-align: center;
+                margin-top: 15px;
+                margin-bottom: 15px;
+                font-weight: bold;
+            }
+
+            .inline {
+                display: inline-block;
+                padding: 0;
+            }
+        </style>
+
+    }
+}
+

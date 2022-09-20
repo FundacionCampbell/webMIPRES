@@ -1,0 +1,258 @@
+﻿@model webMIPRES.Models.MedicamentoModel
+
+@{
+    ViewBag.Title = "Gestion MIPRES";
+}
+
+<h1>@ViewBag.Title</h1>
+
+@using (Html.BeginForm("GetDatosCasos", "MIPRESController"))
+{
+    <fieldset>
+        <div class="row">
+            <div class="field col-md-2">
+                @Html.Label("No. Caso:")
+                @Html.TextBox("NoCuenta", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+            </div>
+
+            <div class="field col-md-2">
+                @Html.Label("Paciente:")
+                @Html.TextBox("Paciente", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+            </div>
+        </div>
+
+        <div class="col-md-12" id="TabsKP">
+            <ul class="nav nav-tabs">
+                <!--nav-pills  -->
+                <li class="active"><a data-toggle="tab" href="#Egresos"><i class="fas fa-money-check" style="font-size:24px;color:darkgreen"></i> EGRESOS</a></li>
+                <li><a data-toggle="tab" href="#Extractos"><i class="fas fa-file-alt" style="font-size:24px;color:darkgreen"></i> EXTRACTOS</a></li>
+            </ul>
+        </div>
+        <br>
+
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="Egresos">
+                <div id="gvEgresosCasos">
+
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="Extractos">
+                <div id="gvResponsables">
+
+                </div>
+                <hr />
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="panel panel-primary resizable" id="divMedicamento">
+                            <div class="panel-heading">
+                                <i class="fa fa-bell fa-fw"></i>
+                                Detalle Extracto
+                            </div>
+
+
+                            <div id="gvDetalleExtracto">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="modalMIPRES" aria-labelledby="modalMIPRES" aria-hidden="true" style="overflow-y: auto;">
+            <div class="modal-dialog modal-lg modal-notify modal-success" role="document">
+                <div class="modal-content" style="margin:auto">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnCloseMD">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <p class="heading lead">Entrega MIPRES</p>
+                    </div>
+
+                    <div class="modal-body" style="margin-left: 50px; border-right-width: 50px; background: white; margin-right:50px;">
+                        @*este es el contenido*@
+                        <div class="container">
+                            <div class="row">
+                                <div class="panel panel-primary col-lg-12">
+
+                                    <table class="table table-hover table-striped table-responsive" cellspacing="1" width="100" sTYLE="table-layout:fixed">
+                                        <thead class="text-center">
+                                            <tr style="background-color:#15451b;font-stretch:condensed;color:white">
+                                                <th nowrap width="100%">
+                                                    DATOS REPORTE MIPRES
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+
+                                    <form class="form-horizontal" role="form">
+                                        <fieldset>
+                                            <div class="row form-inline col-lg-12">
+
+                                                <div class="col-xs-10">
+                                                    <div class="input-group">
+                                                        @Html.Label("No. Prescripcion:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("NoPrescripcionMIPRES", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                                <div><br /></div>
+                                                <div class="col-xs-3">
+                                                    <div class="input-group">
+                                                        @Html.Label("Tipo Identificacion:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("TipoIDPaciente", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="input-group">
+                                                        @Html.Label("No Identificacion Paciente:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("NoIDPaciente", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+
+                                                <div><br /></div>
+                                                <div class="col-xs-4">
+                                                    <div class="input-group">
+                                                        @Html.Label("Fecha Entrega:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("FecEntrega", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="input-group">
+                                                        @Html.Label("Codigo Servicio(CUM):", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("CodSerTecEntregado", "", new { @class = "form-control input-sm " })
+                                                    </div>
+                                                </div>
+
+                                                <div><br /></div>
+                                                <div class="col-xs-4">
+                                                    <div class="input-group">
+                                                        @Html.Label("Tipo Tecnologia:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @*@Html.TextBox("TipoTec", "", new { @class = "form-control input-sm col-sm-5" })*@
+                                                        @Html.DropDownList("TipoTec", new List<SelectListItem>
+                                                   {
+                                                           new SelectListItem{ Text= "Medicamento", Value = "M" },
+                                                           new SelectListItem{ Text= "Nutricionales", Value = "N" },
+                                                              new SelectListItem{ Text= "Serv.Compl", Value = "S" },
+                                                           new SelectListItem{ Text= "Procedimientos", Value = "P" },
+                                                            new SelectListItem{ Text= "Dispositivos", Value = "D" },
+
+                                                   }, htmlAttributes: new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="input-group">
+                                                        @Html.Label("Consecutivo Tecnologia:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("ConTec", "", new { @class = "form-control input-sm col-sm-5" })
+                                                    </div>
+                                                </div>
+
+                                                <div><br /></div>
+                                                <div class="col-xs-4">
+                                                    <div class="input-group">
+                                                        @Html.Label("No. Entrega:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("NoEntrega", "", new { @class = "form-control input-sm col-sm-3" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="input-group">
+                                                        @Html.Label("Cantidad Entregada:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("CantTotEntregada", "", new { @class = "form-control input-sm col-sm-4" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-10">
+                                                    <div class="input-group">
+                                                        @Html.Label("Total Entrega:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("EntTotal", "", new { @class = "form-control input-sm col-sm-4", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+
+                                                <div><br /></div>
+                                                <div class="col-xs-4">
+                                                    <div class="input-group">
+                                                        @Html.Label("Causal Entrega:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("CausaNoEntrega", "", new { @class = "form-control input-sm col-sm-5" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="input-group">
+                                                        @Html.Label("No. Lote:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                        @Html.TextBox("NoLote", "", new { @class = "form-control input-sm col-sm-5" })
+                                                    </div>
+                                                </div>
+
+                                                <div style="display:none">
+                                                    @Html.LabelFor(model => model.TokenGenerado)
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer" style="margin-left: 50px; border-right-width: 50px; background: white; margin-right: 50px;">
+                        <button class="btn btn-success btn-sm" data-dismiss="modal" id="btnEnviar">Registrar</button>
+                        <button class="btn btn-warning btn-sm" data-dismiss="modal" id="btnModal2">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </fieldset>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link href="~/Extras/DataTable/select.dataTables.min.css" rel="stylesheet" />
+
+    @section Scripts {
+        <script src="~/Extras/DataTable/jquery.dataTables.min.js"></script>
+        <script src="~/Extras/DataTable/dataTables.select.min.js"></script>
+        <script src="~/Extras/DataTable/Css/dataTables.responsive.min.js"></script>
+        <link href="~/Extras/DataTable/Css/responsive.bootstrap.css" rel="stylesheet" />
+
+        <script src="~/Extras/Utilidades.js"></script>
+        <script src="~/Extras/Validaciones.js"></script>
+
+        <style>
+            #Extractos {
+                overflow: scroll;
+            }
+        </style>
+
+        <style>
+            #Egresos {
+                overflow: scroll;
+            }
+        </style>
+
+        <style>
+            .imgCheck {
+                /*background: url('../../Content/images/check11.png') no-repeat;*/
+                background-image: url('../../Content/images/true.png');
+                cursor: pointer;
+                border: none;
+            }
+
+            .table-fixed {
+                overflow-y: auto;
+                height: 140px;
+                width: 100%;
+            }
+
+            .modal-body {
+                overflow-x: auto;
+                overflow-y: auto;
+            }
+        </style>
+
+    }
+
+
+
+}

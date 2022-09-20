@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    @*<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/91da81d6d1.js"></script>
+
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/StyleSimple.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Grupo Campbell", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav" id="myMenu">
+                    <li>@Html.ActionLink("Validar TOKEN", "ValidaToken", "MIPRES", null, null)</li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="glyphicon glyphicon-list-alt"> PRESCRIPCIONES</i>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a>@Html.ActionLink("Prescripciones", "IndexPrescripcion", "MIPRES", null, null)</a></li>
+                            <li><a>@Html.ActionLink("Entregas de Prescripciones", "IndexEntrega", "MIPRES", null, null)</a></li>
+                            <li><a>@Html.ActionLink("Reportes de Entregas", "IndexReporte", "MIPRES", null, null)</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="glyphicon glyphicon-list-alt"> FACTURACION</i>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a>@Html.ActionLink("Facturacion", "IndexFacturacion", "MIPRES", null, null)</a></li>
+                            <li><a>@Html.ActionLink("Anulacion Facturacion", "IndexAnulacionFact", "MIPRES", null, null)</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="glyphicon glyphicon-list-alt"> Consultas </i>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a>@Html.ActionLink("Informe Prescripcion MIPRES", "InformeMIPRES", "MIPRES", null, null)</a></li>
+                            <li><a>@Html.ActionLink("Instructivo Gestion MIPRES", "ViewPDF", "MIPRES", null, null)</a></li>
+                            <li><a>@Html.ActionLink("Instructivo Facturacion MIPRES", "ViewFacpdf", "MIPRES", null, null)</a></li>
+                            <li><a></a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="@Url.Action("LogOut", "Home")" class="btn" id="btnLogOut">
+                            <span class="glyphicon glyphicon-log-out" data-toggle="tooltip" title="Cerrar Sesion"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+    </div>
+    <div class="navbar navbar-inverse navbar-bottom" role="navigation">
+        <div class="container">
+            <p class="navbar-text">&copy; @DateTime.Now.Year - <a href="http://siscolombia.co" target="_blank"><img src="~/Content/images/logoSis16.png" /> </a> SERVICIOS INTEGRALES DE SISTEMAS - S.I.S.</p>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

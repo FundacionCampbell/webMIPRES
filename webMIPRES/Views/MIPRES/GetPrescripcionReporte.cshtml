@@ -1,0 +1,195 @@
+﻿
+@{
+    ViewBag.Title = "Reporte de Entrega Por Prescripcion";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("GetPrescripcionReporte", "MIPRESController", FormMethod.Post))
+{
+    <fieldset>
+        <div class="row">
+            <div class="field col-md-2">
+                @Html.Label("No. Prescripcion:")
+                @Html.TextBox("NoPrescripcion", "", new { @class = "form-control input-sm " })
+
+            </div>
+
+            <div class="form-actions ">
+                <button type="button" id="btnPrescripcionR" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-search"></span> Buscar
+                </button>
+                &nbsp;
+                <a href="@Url.Action("LogOut", "Home")" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-off"></span> Salir
+                </a>
+                @*@Html.ActionLink("SALIR", "LogOut", "")*@
+            </div>
+        </div>
+        <br />
+        @* Datatable prescripciones *@
+        <div class="panel panel-primary col-lg-12" style="height:472px;" id="dtPrescripcion">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i>
+                Reporte Entregas Por Prescripcion
+            </div>
+            @* Tabla de datagrid*@
+            <div id="gvPrescripciones">
+
+            </div>
+            <!-- Image loader -->
+            <div id="loader" style="display: none;" class="text-center">
+                <img src="~/Content/images/Spinner-1s-200px.gif" border="0">
+            </div>
+        </div>
+
+        <div class="modal fade" id="modEntregas" tabindex="-1" role="dialog" aria-labelledby="modEntregas" aria-hidden="true">
+            <div class="modal-dialog modal-success" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @*<h5 class="modal-title" id="modEntregas">Anulacion de Entrega</h5>*@
+                        <p class="heading lead" style="color:#15451b;">Anulacion Reporte de Entrega</p>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="CloseAE">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <fieldset>
+                                <div class="row form-inline">
+                                    <div class="col-xs-10">
+                                        <div class="input-group">
+                                            @Html.Label("No. Prescripcion:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("NoPrescripcionMIPRES", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                    <div class="col-xs-6">
+                                        <div class="input-group">
+                                            @Html.Label("Id Reporte:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("IDReporteEntrega", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-6">
+                                        <div class="input-group">
+                                            @Html.Label("Fecha Reporte:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("FecEntrega", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                    <div class="col-xs-6">
+                                        <div class="input-group">
+                                            @Html.Label("Codigo Servicio(CUM):", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("CodSerTecEntregado", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-6">
+                                        <div class="input-group">
+                                            @Html.Label("Valor:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("ValorEntrega", "", new { @class = "form-control input-sm col-sm-3", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>*@
+                        <button type="button" class="btn btn-primary" id="btnAnulaRep">Anular</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </fieldset>
+
+    @section Scripts {
+        <script src="~/Extras/DataTable/jquery.dataTables.min.js"></script>
+        <script src="~/Extras/DataTable/dataTables.select.min.js"></script>
+        <script src="~/Extras/DataTable/Css/dataTables.responsive.min.js"></script>
+        <link href="~/Extras/DataTable/Css/responsive.bootstrap.css" rel="stylesheet" />
+        <script src="~/Extras/DialogoUI/bootstrap-waitingfor.min.js"></script>
+
+        <script src="~/Extras/Utilidades.js"></script>
+        <script src="~/Extras/Validaciones.js"></script>
+        <script src="~/Scripts/JsMipres/JsMipres.js"></script>
+
+        <script type="text/javascript">
+            window.progress = function () {
+                waitingDialog.show();
+                //---------------------------------
+                //waitingDialog.progress(0);
+                setTimeout(function () {
+                    // waitingDialog.progress(10);
+                    waitingDialog.message('Conectando a Web Service..')
+                }, 1000);
+                //------------------------------------------
+                var mocks = [{ message: 'Conectando a Web Service..', prog: 10 }, { message: 'Cargando Informacion...', prog: 30 }, { message: 'Espere Por favor..', prog: 40 }, { prog: 50 }, { prog: 55 }, { prog: 56 }, { prog: 57 }, { prog: 61 }, { prog: 70 }, { prog: 75 }, { prog: 77 }, { prog: 80 }, { prog: 88 }, { prog: 89 }, { prog: 91 }, { prog: 92 }, { prog: 94 }, { prog: 95 }, { prog: 96 }, { prog: 99 }, { prog: 100 }];
+                mocks.forEach(function (e, i) {
+                    setTimeout(function () {
+                        if (e.message) {
+                            waitingDialog.message(e.message)
+                        } else {
+                            waitingDialog.message(e.prog + '% ...')
+                        }
+                        //waitingDialog.progress(e.prog);
+                    }, (i + 1) * 2000)
+                });
+
+                setTimeout(function () {
+
+                    waitingDialog.hide();
+
+                }, (mocks.length + 0.5) * 2000);
+
+            }
+        </script>
+
+        <style>
+            #dtPrescripcion {
+                overflow: scroll;
+            }
+        </style>
+    }
+
+    <div id="dvOcultos" style="display:none">
+
+        @Html.Hidden("hfNit")
+        @Html.Hidden("hfToken")
+        @Html.Hidden("hfTokenProveedor")
+        @Html.Hidden("hfEmpresa")
+        @Html.Hidden("hfNoCuenta")
+        @Html.Hidden("hfNoHistoria")
+        @Html.Hidden("hfNoIdentificacion")
+        @Html.Hidden("hfTipoIdentificacion")
+        @Html.Hidden("hfNoPrescripcion")
+        @Html.Hidden("hfUrlPrescripciones")
+        @Html.Hidden("hfUrlEntregaAmbito")
+        @Html.Hidden("hfUrlReporteEntrega")
+        @Html.Hidden("hfUrlValidaToken")
+        @Html.Hidden("hfUrlUnaPrescripcion")
+        @Html.Hidden("hfUrlFacturacion")
+        @Html.Hidden("hfPaciente")
+        @Html.Hidden("hfTokenGenerado")
+        @Html.Hidden("hfNoID")
+        @Html.Hidden("hfIDEntrega")
+        @Html.Hidden("hfVlrEntrega")
+        @Html.Hidden("hfNoIDReporte")
+        @Html.Hidden("hfIDReporteEntrega")
+        @Html.Hidden("hfUrlEntregasFechas")
+        @Html.Hidden("hfUrlReportesFechas")
+        @Html.Hidden("hfUrlEntregaPrescripcion")
+        @Html.Hidden("hfUrlReportePrescripcion")
+        @Html.Hidden("hfUrlAnularNoEntrega")
+        @Html.Hidden("hfUrlAnularReporteEntrega")
+        @Html.Hidden("hfProceso")
+
+    </div>
+
+}

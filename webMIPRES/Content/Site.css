@@ -1,0 +1,162 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/*****  Filtro Alfabetico para Busqueda Index ******/
+ul.filtroAlfab {
+    list-style-type: none;
+    margin: 0px;
+    float: left;
+}
+
+    ul.filtroAlfab li {
+        margin: 2px;
+        font-size: 130%;
+        border: 1px solid #f5f5f5;
+        padding: 6px 8px;
+        float: left;
+    }
+
+        ul.filtroAlfab li.selected {
+            background-color: #333333;
+            color: White;
+        }
+
+        ul.filtroAlfab li a {
+            color: #333333;
+        }
+
+/*.width3{
+    max-width: 280px;
+}
+*/
+.input-validation-error {
+    background-color: #f2dede;
+    border-color: #eed3d7;
+    color: #b94a48;
+}
+
+.Ocultar {
+    display: none;
+}
+
+#speechinput {
+    width: 25px;
+    // just wide enough to show mic icon height: 25px;
+    // just high enough to show mic icon cursor:pointer;
+    border: none;
+    position: absolute;
+    margin-left: 5px;
+    outline: none;
+    background: transparent;
+}
+
+#mytextarea {
+    height: 300px;
+    width: 100px;
+}
+
+.switch input {
+    display: none;
+}
+
+.switch {
+    display: inline-block;
+    width: 50px;
+    height: 20px;
+    margin: 8px;
+    transform: translateY(50%);
+    position: relative;
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 20px;
+    box-shadow: 0 0 0 2px #777, 0 0 4px #777;
+    cursor: pointer;
+    border: 4px solid transparent;
+    overflow: hidden;
+    transition: .4s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        background: #777;
+        border-radius: 20px;
+        transform: translateX(-30px);
+        transition: .4s;
+    }
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+    background: limeGreen;
+}
+
+input:checked + .slider {
+    box-shadow: 0 0 0 2px limeGreen,0 0 2px limeGreen;
+}
+
+.btn.active {
+    display: none;
+}
+
+.btn span:nth-of-type(1) {
+    display: none;
+}
+
+.btn span:last-child {
+    display: block;
+}
+
+.btn.active span:nth-of-type(1) {
+    display: block;
+}
+
+.btn.active span:last-child {
+    display: none;
+}
+
+.checkbox-teal [type="checkbox"]:checked + label:before {
+    border-color: transparent #009688 #009688 transparent;
+}
+
+.checkbox-warning-filled [type="checkbox"][class*='filled-in']:checked + label:after {
+    border-color: #FF8800;
+    background-color: #FF8800;
+}
+
+.checkbox-rounded [type="checkbox"][class*='filled-in'] + label:after {
+    border-radius: 50%;
+}
+
+.checkbox-living-coral-filled [type="checkbox"][class*='filled-in']:checked + label:after {
+    border-color: #FF6F61;
+    background-color: #FF6F61;
+}
+
+.checkbox-cerulean-blue-filled [type="checkbox"][class*='filled-in']:checked + label:after {
+    border-color: #92aad0;
+    background-color: #92aad0;
+}
+

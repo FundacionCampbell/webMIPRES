@@ -1,0 +1,17 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="jumbotron">
+    <div class="form-inline">
+        <span class="glyphicon glyphicon-user"></span><p><h3>@HttpContext.Current.Session["UserName"]</h3></p>
+    </div>
+    <img src="~/Content/images/GrupoEmpresarial_vertical-01.png" style="height:180px;" class="img-responsive center-block" alt="" />
+    <p class="lead text-center">Portal Web para las I.P.S. del Grupo Empresarial Campbell.</p>
+    <p><a href="http://grupocampbell.com" class="btn btn-primary btn-lg" target="_blank">Nosotros &raquo;</a></p>
+
+    <p><h2>@HttpContext.Current.Session["NameCompany"]</h2></p>
+</div>

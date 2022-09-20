@@ -1,0 +1,191 @@
+﻿
+@{
+    ViewBag.Title = "Prescripcion";
+
+}
+
+<h2>Consultas Prescripciones</h2>
+@using (Html.BeginForm("GetNumeroPrescripcion", "MIPRESController", FormMethod.Post))
+{
+    <fieldset>
+        <div class="row">
+            <div class="field col-md-2">
+                @Html.Label("No. Prescripcion:")
+                @Html.TextBox("NoPrescripcion", "", new { @class = "form-control input-sm " })
+
+            </div>
+
+            <div class="form-actions ">
+                <button type="button" id="btnPrescripcion" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-search"></span> Buscar
+                </button>
+                &nbsp;
+                <a href="@Url.Action("LogOut", "Home")" class="btn btn-primary btn-sm">
+                    <span class="glyphicon glyphicon-off"></span> Salir
+                </a>
+                @*@Html.ActionLink("SALIR", "LogOut", "")*@
+            </div>
+        </div>
+        <br />
+
+        @* Datatable de Prescripciones *@
+        <div class="panel panel-primary col-lg-12" style="height:140px;" id="dtPrescripcion">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i>
+                Prescripciones Activas
+            </div>
+            @* Tabla de datagrid*@
+            <div id="gvPrescripciones">
+
+            </div>
+
+        </div>
+
+        <div class="panel panel-primary col-lg-6 resizable" style="height:372px;" id="dtPrescripcion">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i>
+                Medicamentos
+            </div>
+            @* Tabla de datagrid*@
+            <div id="gvMedicamento">
+
+            </div>
+
+        </div>
+
+        <div class="panel panel-primary col-lg-6 resizable" style="height:372px;" id="dtPrescripcion">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i>
+                Casos del Paciente
+            </div>
+            @* Tabla de datagrid*@
+            <div id="gvDatosPaciente">
+
+            </div>
+        </div>
+
+        <div class="modal fade resizable" id="modMedicamentos" aria-labelledby="modMedicamentos" aria-hidden="true" style="overflow-y: auto;">
+            @*<div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="margin:auto">*@
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnCloseMD">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4>Gestion MIPRES</h4>
+            </div>
+
+            <div class="modal-body" style="margin-left: 50px; border-right-width: 50px; background: white; margin-right:50px;">
+                @*este es el contenido*@
+
+                @{Html.RenderAction("GetDatosCasos", "MIPRES");}
+
+            </div>
+
+            <div class="modal-footer" style="margin-left: 50px; border-right-width: 50px; background: white; margin-right: 50px;">
+                @*<button class="btn btn-success btn-sm" data-dismiss="modal" id="btnEnviar">Registrar</button>*@
+                @*<button class="btn btn-warning btn-sm" data-dismiss="modal" id="btnModal1">Cancelar</button>*@
+            </div>
+        </div>
+
+
+
+    </fieldset>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link href="~/Extras/DataTable/select.dataTables.min.css" rel="stylesheet" />
+
+    @section Scripts {
+        <script src="~/Extras/DataTable/jquery.dataTables.min.js"></script>
+        <script src="~/Extras/DataTable/dataTables.select.min.js"></script>
+        <script src="~/Extras/DataTable/Css/dataTables.responsive.min.js"></script>
+        <link href="~/Extras/DataTable/Css/responsive.bootstrap.css" rel="stylesheet" />
+        <script src="~/Extras/DialogoUI/bootstrap-waitingfor.min.js"></script>
+        
+        <script src="~/Extras/Utilidades.js"></script>
+        <script src="~/Extras/Validaciones.js"></script>
+        <script src="~/Scripts/JsMipres/JsMipres.js"></script>
+
+        <script type="text/javascript">
+            window.progress=function() {
+                waitingDialog.show();
+                //---------------------------------
+                //waitingDialog.progress(0);
+                setTimeout(function () {
+                   // waitingDialog.progress(10);
+                    waitingDialog.message('Conectando a Web Service..')
+                }, 1000);
+                //------------------------------------------
+                var mocks = [{ message: 'Conectando a Web Service..', prog: 10 }, { message: 'Cargando Informacion...', prog: 30 }, { message: 'Espere Por favor..', prog: 40 }, { prog: 50 }, { prog: 55 }, { prog: 56 }, { prog: 57 }, { prog: 61 }, { prog: 70 }, { prog: 75 }, { prog: 77 }, { prog: 80 }, { prog: 88 }, { prog: 89 }, { prog: 91 }, { prog: 92 }, { prog: 94 }, { prog: 95 }, { prog: 96 }, { prog: 99 }, { prog: 100 }];
+                mocks.forEach(function (e, i) {
+                    setTimeout(function () {
+                        if (e.message) {
+                            waitingDialog.message(e.message)
+                        } else {
+                            waitingDialog.message(e.prog + '% ...')
+                        }
+                        //waitingDialog.progress(e.prog);
+                    }, (i + 1) * 2000)
+                });
+
+                setTimeout(function () {
+
+                    waitingDialog.hide();
+
+                }, (mocks.length + 0.5) * 2000);
+
+            }
+        </script>
+
+        <style>
+            #dtPrescripcion {
+                overflow: scroll;
+            }
+
+            .table100, .row, .container, .table-responsive, .table-bordered {
+                height: 100%;
+            }
+
+            .modal-body {
+                overflow-x: auto;
+                overflow-y: auto;
+            }
+        </style>
+    }
+
+    <div id="dvOcultos" style="display:none">
+
+        @Html.Hidden("hfNit")
+        @Html.Hidden("hfToken")
+        @Html.Hidden("hfTokenProveedor")
+        @Html.Hidden("hfEmpresa")
+        @Html.Hidden("hfEmpCta")
+        @Html.Hidden("hfNoCuenta")
+        @Html.Hidden("hfNoHistoria")
+        @Html.Hidden("hfNoIdentificacion")
+        @Html.Hidden("hfTipoIdentificacion")
+        @Html.Hidden("hfResponsable")
+        @Html.Hidden("hfNitEntidad")
+        @Html.Hidden("hfCodEPS")
+        @Html.Hidden("hfCodArt")
+        @Html.Hidden("hfNoFactura")
+        @Html.Hidden("hfNoPrescripcion")
+        @Html.Hidden("hfUrlPrescripciones")
+        @Html.Hidden("hfUrlEntregaAmbito")
+        @Html.Hidden("hfUrlReporteEntrega")
+        @Html.Hidden("hfUrlValidaToken")
+        @Html.Hidden("hfUrlUnaPrescripcion")
+        @Html.Hidden("hfUrlFacturacion")
+        @Html.Hidden("hfPaciente")
+        @Html.Hidden("hfTokenGenerado")
+        @Html.Hidden("hfTipoTecnologia")
+        @Html.Hidden("hfNoID")
+        @Html.Hidden("hfIDEntrega")
+        @Html.Hidden("hfCantidad")
+        @Html.Hidden("hfPrecioUni")
+        @Html.Hidden("hfVlrEntrega")
+        @Html.Hidden("hfNoIDReporte")
+        @Html.Hidden("hfIDReporteEntrega")
+        @Html.Hidden("hfProceso")
+
+    </div>
+}

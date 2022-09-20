@@ -1,0 +1,6 @@
+D:\Fuentes\EventosAdversos\BiblioInterfazSiesa\obj\Release\BiblioInterfazSiesa.csprojAssemblyReference.cache
+D:\Fuentes\EventosAdversos\BiblioInterfazSiesa\obj\Release\BiblioInterfazSiesa.csproj.CoreCompileInputs.cache
+D:\Fuentes\RondaMedica\BiblioInterfazSiesa\obj\Release\BiblioInterfazSiesa.csprojAssemblyReference.cache
+D:\Fuentes\RondaMedica\BiblioInterfazSiesa\obj\Release\BiblioInterfazSiesa.csproj.CoreCompileInputs.cache
+D:\Fuentes\RondaHospitalaria\BiblioInterfazSiesa\obj\Release\BiblioInterfazSiesa.csprojAssemblyReference.cache
+D:\Fuentes\RondaHospitalaria\BiblioInterfazSiesa\obj\Release\BiblioInterfazSiesa.csproj.CoreCompileInputs.cache

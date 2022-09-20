@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "a2dddb4e-34e5-43cc-8792-d3351df07319": {
+      "ProjectGuid": "a2dddb4e-34e5-43cc-8792-d3351df07319",
+      "DisplayName": "webMIPRES",
+      "ColorIndex": 0
+    },
+    "b4a792d9-393f-4d33-a34f-ca48ec47e3ff": {
+      "ProjectGuid": "b4a792d9-393f-4d33-a34f-ca48ec47e3ff",
+      "DisplayName": "BiblioInterfazSiesa",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}

@@ -1,0 +1,315 @@
+﻿
+@{
+    ViewBag.Title = "Facturacion Por Prescripcion";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+    if (ViewBag.Role == "P")
+    {
+        <script type="text/javascript">
+            alert("Rol de usuario no tiene permiso para esta opcion...");
+            window.location.href = '@Url.Action("Index", "MIPRES")';
+        </script>
+    }
+}
+
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm())
+{
+
+<fieldset>
+    <div class="row">
+        <div class="field col-md-2">
+            @Html.Label("No. Prescripcion:")
+            @Html.TextBox("NoPrescripcion", "", new { @class = "form-control input-sm " })
+
+        </div>
+
+        <div class="form-actions ">
+            <button type="button" id="btnPrescripcionF" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-search"></span> Buscar
+            </button>
+            &nbsp;
+            <a href="@Url.Action("LogOut", "Home")" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-off"></span> Salir
+            </a>
+            @*@Html.ActionLink("SALIR", "LogOut", "")*@
+        </div>
+    </div>
+    <br />
+
+    @* Datatable prescripciones *@
+    <div class="panel panel-primary col-lg-12" style="height:472px;" id="dtPrescripcion">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i>
+            Facturacion Por Prescripcion
+        </div>
+        @* Tabla de datagrid*@
+        <div id="gvPrescripciones">
+
+        </div>
+        <br />
+        @* Modal Registra Factura *@
+        <div id="panelFact" style="display:none">
+            <div class="container">
+                <div class="row">
+                    <div class="panel panel-primary col-lg-6">
+
+                        <table class="table table-hover table-striped table-responsive" cellspacing="1" width="100" sTYLE="table-layout:fixed">
+                            <thead class="text-center">
+                                <tr style="background-color:#15451b;font-stretch:condensed;color:white">
+                                    <th nowrap width="100%">
+                                        DATOS REPORTE MIPRES
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                        <form class="form-horizontal" role="form">
+                            <fieldset>
+                                <div class="row form-inline col-lg-12">
+
+                                    <div class="col-sm-12">
+                                        <div class="input-group">
+                                            @Html.Label("No. Prescripcion:", htmlAttributes: new { @class = "control-label label-success col-sm-6 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("NoPrescripcionMIPRES", "", new { @class = "form-control input-sm ", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("Tipo Tecnologia:", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("TipoTec", "", new { @class = "form-control col-sm-1", @readonly = "readonly" })
+
+                                            @*@Html.DropDownList("TipoTec", new List<SelectListItem>
+                                            {
+                                                    new SelectListItem{ Text= "Medicamento", Value = "M" },
+                                                    new SelectListItem{ Text= "Nutricionales", Value = "N" },
+                                                       new SelectListItem{ Text= "Serv.Compl", Value = "S" },
+                                                    new SelectListItem{ Text= "Procedimientos", Value = "P" },
+                                                     new SelectListItem{ Text= "Dispositivos", Value = "D" },
+
+                                            }, htmlAttributes: new { @class = "form-control" })*@
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("Consecutivo Tecnologia:", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("ConTec", "", new { @class = "form-control col-sm-1", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("Tipo Identificacion:", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("TipoIDPaciente", "", new { @class = "form-control col-sm-1 input-sm ", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("No Identificacion Paciente:", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("NoIDPaciente", "", new { @class = "form-control col-sm-6 input-sm ", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div id="divCaso" style="display:none">
+                                        <div><br /></div>
+                                        <div class="col-sm-12">
+                                            <div class="input-group">
+                                                @Html.Label("No Caso:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                                @Html.DropDownList("lstCasos", new SelectList(string.Empty, "Value", "Text"), "Seleccione una Entidad", new { style = "width:210px", @class = "input-sm form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                    <div class="col-sm-12">
+                                        <div class="input-group">
+                                            @Html.Label("ID EPS:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.DropDownList("lstNoIDEPS", new SelectList(string.Empty, "Value", "Text"), "Seleccione una Entidad", new { style = "width:210px", @class = "input-sm form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                    <div class="col-sm-12">
+                                        <div class="input-group">
+                                            @Html.Label("lblEPS", htmlAttributes: new { @class = "control-label label-info col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;", @id = "labelEPS" })
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("Codigo EPS:", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("CodEPS", "", new { @class = "form-control col-sm-1 input-sm " })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("No. Entrega:", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("NoEntrega", "", new { @class = "form-control input-sm col-sm-1" })
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("No Factura:", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.DropDownList("lstFactEPS", new SelectList(string.Empty, "Value", "Text"), "Seleccione Factura", new { style = "width:130px", @class = "input-sm form-control" })
+                                            @*@Html.TextBox("NoFactura", "", new { @class = "form-control input-sm col-sm-5" })*@
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("Codigo Servicio(CUM):", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("CodSerTecEntregado", "", new { @class = "form-control col-sm-3 input-sm", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("Cantidad Entregada:", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("CantTotEntregada", "", new { @class = "form-control input-sm col-sm-1", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("Valor Unit:", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("ValorUnitFacturado", "", new { @class = "form-control input-sm col-sm-1" }) @*, @readonly = "readonly"*@
+                                        </div>
+                                    </div>
+
+                                    <div><br /></div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            @Html.Label("Valor Total:", htmlAttributes: new { @class = "control-label label-success col-sm-12 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                                            @Html.TextBox("ValorTotFacturado", "", new { @class = "form-control input-sm col-sm-1" })  @*, @readonly = "readonly"*@
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-inline col-lg-12">
+            <br />
+            <button type="button" id="btnSalvar" class="btn btn-primary"> <span class="glyphicon glyphicon-saved"></span> Registrar</button>
+        </div>
+    </div>
+
+
+
+    <!-- Image loader -->
+    <div id="loader" style="display: none;" class="text-center">
+        <img src="~/Content/images/Spinner-1s-200px.gif" border="0">
+    </div>
+
+
+</fieldset>
+
+    @section Scripts {
+        <script src="~/Extras/DataTable/jquery.dataTables.min.js"></script>
+        <script src="~/Extras/DataTable/dataTables.select.min.js"></script>
+        <script src="~/Extras/DataTable/Css/dataTables.responsive.min.js"></script>
+        <link href="~/Extras/DataTable/Css/responsive.bootstrap.css" rel="stylesheet" />
+        <script src="~/Extras/DialogoUI/bootstrap-waitingfor.min.js"></script>
+
+        <script src="~/Extras/Utilidades.js"></script>
+        <script src="~/Extras/Validaciones.js"></script>
+
+        <script src="~/Scripts/JsSIRAS/JsMIPRES.js"></script>
+        <script type="text/javascript">
+            window.progress = function () {
+                waitingDialog.show();
+                //---------------------------------
+                //waitingDialog.progress(0);
+                setTimeout(function () {
+                    // waitingDialog.progress(10);
+                    waitingDialog.message('Conectando a Web Service..')
+                }, 1000);
+                //------------------------------------------
+                var mocks = [{ message: 'Conectando a Web Service..', prog: 10 }, { message: 'Cargando Informacion...', prog: 30 }, { message: 'Espere Por favor..', prog: 40 }, { prog: 50 }, { prog: 55 }, { prog: 56 }, { prog: 57 }, { prog: 61 }, { prog: 70 }, { prog: 75 }, { prog: 77 }, { prog: 80 }, { prog: 88 }, { prog: 89 }, { prog: 91 }, { prog: 92 }, { prog: 94 }, { prog: 95 }, { prog: 96 }, { prog: 99 }, { prog: 100 }];
+                mocks.forEach(function (e, i) {
+                    setTimeout(function () {
+                        if (e.message) {
+                            waitingDialog.message(e.message)
+                        } else {
+                            waitingDialog.message(e.prog + '% ...')
+                        }
+                        //waitingDialog.progress(e.prog);
+                    }, (i + 1) * 2000)
+                });
+
+                setTimeout(function () {
+
+                    waitingDialog.hide();
+
+                }, (mocks.length + 0.5) * 2000);
+
+            }
+        </script>
+
+        <style>
+            #dtPrescripcion {
+                overflow: scroll;
+            }
+        </style>
+    }
+
+
+}
+
+<div id="dvOcultos" style="display:none">
+
+            @Html.Hidden("hfNit")
+            @Html.Hidden("hfToken")
+            @Html.Hidden("hfTokenProveedor")
+            @Html.Hidden("hfTokenEmp")
+            @Html.Hidden("hfEmpresa")
+            @Html.Hidden("hfNoCuenta")
+            @Html.Hidden("hfNoHistoria")
+            @Html.Hidden("hfNoIdentificacion")
+            @Html.Hidden("hfTipoIdentificacion")
+            @Html.Hidden("hfNoPrescripcion")
+            @Html.Hidden("hfUrlPrescripciones")
+            @Html.Hidden("hfUrlEntregaAmbito")
+            @Html.Hidden("hfUrlReporteEntrega")
+            @Html.Hidden("hfUrlValidaToken")
+            @Html.Hidden("hfUrlUnaPrescripcion")
+            @Html.Hidden("hfUrlFacturacion")
+            @Html.Hidden("hfPaciente")
+            @Html.Hidden("hfTokenGenerado")
+            @Html.Hidden("hfNoID")
+            @Html.Hidden("hfIDEntrega")
+            @Html.Hidden("hfVlrEntrega")
+            @Html.Hidden("hfNoIDReporte")
+            @Html.Hidden("hfIDReporteEntrega")
+            @Html.Hidden("hfUrlEntregasFechas")
+            @Html.Hidden("hfUrlEntregaPrescripcion")
+            @Html.Hidden("hfUrlReportePrescripcion")
+            @Html.Hidden("hfUrlAnularNoEntrega")
+            @Html.Hidden("hfUrlAnularReporteEntrega")
+            @Html.Hidden("hfNitEPS")
+            @Html.Hidden("hfNomEPS")
+            @Html.Hidden("hfFactEPS")
+            @Html.Hidden("hfVlrCoopago")
+            @Html.Hidden("hfCuotaModeradora")
+            @Html.Hidden("hfProceso")
+            @Html.Hidden("hfResponsable")
+            @Html.Hidden("hfNitEntidad")
+            @Html.Hidden("hfCodEPS")
+            @Html.Hidden("hfNoFactura")
+            @Html.Hidden("hfConsIntFact")
+            @Html.Hidden("hfCantidad")
+            @Html.Hidden("hfPrecioUni")
+            @Html.Hidden("hfFecEntrega")
+
+
+        </div>

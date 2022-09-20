@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Reportes de Entrega";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+    if (ViewBag.Role = "F")
+    {
+        <script type="text/javascript">
+            alert("Rol de usuario no tiene permiso para esta opcion...");
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
+    }
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <a href="@Url.Action("GetReportesFechas", "MIPRES")" class="btn_mnu">Reportes x Fecha</a>
+    <a href="@Url.Action("GetPrescripcionReporte", "MIPRES")" class="btn_mnu">Reportes x Prescripcion</a>
+    @*<a href="@Url.Action("PutAnularNoReporte", "MIPRES")" class="btn_mnu">Anulacion Reportes de Entregas</a>*@
+</div>
+<div class="jumbotron">
+    <img src="~/Content/images/GrupoEmpresarial_vertical-01.png" style="height:180px;" class="img-responsive center-block" alt="" />
+    <p class="lead text-center">Portal Web para las I.P.S. del Grupo Empresarial Campbell.</p>
+    <p><a href="http://grupocampbell.com" class="btn btn-primary btn-lg" target="_blank">Nosotros &raquo;</a></p>
+</div>
+

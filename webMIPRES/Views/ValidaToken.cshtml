@@ -1,0 +1,117 @@
+﻿@using  MipresApp.Models
+
+@model ValidaTokenModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Generacion de Token";
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("ValidaToken", "MIPRESController", FormMethod.Post))
+{
+    <div class="panel panel-primary col-lg-12">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i>
+            Generacion Token
+        </div>
+
+        <div class="row form-inline col-lg-6">
+            <br />
+            <div class="col-xs-10">
+                <div class="input-group">
+                    @Html.Label("Proceso de Reporte:", htmlAttributes: new { @class = "control-label label-success col-sm-6 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                    @Html.DropDownList("ddlProceso", new List<SelectListItem>
+                       {
+                               new SelectListItem{ Text= "Seleccione", Value = "0" },
+                               new SelectListItem{ Text= "Prescripciones", Value = "P" },
+                               new SelectListItem{ Text= "Facturacion", Value = "F" },
+                       }, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-xs-10">
+                <div class="input-group">
+                    @Html.Label("Nit Empresa:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                    @Html.TextBoxFor(model => model.Nit, new { @class = "form-control input-sm col-md-6", @style = "text-transform:uppercase", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Nit, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-xs-10">
+                <br />
+                <div class="input-group">
+                    @Html.Label("Token Empresa:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                    @Html.TextBoxFor(model => model.TokenEmpresa, new { @class = "form-control input-sm col-md-6", @style = "text-transform:uppercase", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.TokenEmpresa, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-xs-10">
+                <br />
+                <div class="input-group">
+                    @Html.Label("Token Generado:", htmlAttributes: new { @class = "control-label label-success col-sm-5 label label-md", @style = "font-size: smaller; font-style: normal;" })
+                    @Html.TextBoxFor(model => model.TokenGenerado, new { @class = "form-control input-sm col-md-6", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.TokenGenerado, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row form-inline col-lg-12">
+                <br />
+                <input type="button" id="btnGenerar" value="Generar Token" style="width:150px" class="btn btn-success" />
+            </div>
+
+            <br />
+        </div>
+
+        <div class="row form-inline col-lg-6">
+            <!-- Image loader -->
+            <div id="loader" style="display: none;" class="text-center">
+                <img src="~/Content/images/Spinner-1s-200px.gif" border="0">
+            </div>
+        </div>
+
+
+    </div>
+
+    @section Scripts {
+
+        <script src="~/Extras/Utilidades.js"></script>
+        <script src="~/Extras/Validaciones.js"></script>
+        <script src="~/Scripts/JsMipres/JsMipres.js"></script>
+
+        <script type="text/javascript">
+
+        </script>
+    }
+
+    <div id="dvOcultos" style="display:none">
+
+        @Html.Hidden("hfNit")
+        @Html.Hidden("hfToken")
+        @Html.Hidden("hfTokenProveedor")
+        @Html.Hidden("hfTokenEmp")
+        @Html.Hidden("hfEmpresa")
+        @Html.Hidden("hfNoCuenta")
+        @Html.Hidden("hfNoHistoria")
+        @Html.Hidden("hfNoIdentificacion")
+        @Html.Hidden("hfTipoIdentificacion")
+        @Html.Hidden("hfNoPrescripcion")
+        @Html.Hidden("hfUrlPrescripciones")
+        @Html.Hidden("hfUrlEntregaAmbito")
+        @Html.Hidden("hfUrlReporteEntrega")
+        @Html.Hidden("hfUrlValidaToken")
+        @Html.Hidden("hfUrlUnaPrescripcion")
+        @Html.Hidden("hfPaciente")
+        @Html.Hidden("hfUrlFacturacion")
+        @Html.Hidden("hfTokenGenerado")
+        @Html.Hidden("hfProceso")
+
+    </div>
+}
